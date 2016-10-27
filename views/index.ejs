@@ -1,0 +1,86 @@
+<%- include include/head.ejs%>
+
+<p>
+    <%
+    if(count){
+        %>当前作者<%=articles[0].zcjId.username%>一共有<%=count%>篇文章<%
+    }
+    %>
+</p>
+
+<!--显示所有文章-->
+<ul class="form">
+
+    <!--分页查询到所有的文章 在首页渲染  articles代表所有文章-->
+    <%
+        articles.forEach(function(article) {
+    %>
+        <li>
+            <p>文章标题：<%= article.title %></p>
+
+            <p>内容简介：<%= article.content %></p>
+
+            <p>作者：<%= article.zcjId.username %></p>
+
+            <p>发布时间：<%=article.createTime.minute%></p>
+
+            <!--article是所有文章的集合 遍历后就是一个文章的信息  点击进入查看页 记录当前文章一个Id 循环中每个的信息肯定是同步的-->
+            <!--article._id表示当前点击的这个文章的id-->
+            <a href="/article/view/<%=article._id%>">查看文章详情</a>
+
+            <a href="/article/u/<%=article.zcjId._id%>"><%= article.zcjId.username %></a>
+
+            <p>信息查看统计数:<%= article.pv>0?article.pv:0 %></p>
+
+            <p>信息评论数:<%= article.comments.length%></p>
+
+        </li>
+    <%
+    })
+    %>
+
+</ul>
+
+<!--搜索-->
+<form method="get" action="/article/list/1/0" class="search">
+    <input type="text" name="keyword" value="<%=keyword%>">
+    <button type="submit" value="searchBtn" name="searchBtn">搜索</button>
+</form>
+
+
+<!--分页-->
+<ul class="page">
+    <%
+if(flag){
+    var num = 0;
+    if (pageNum % 5 == 0) {  //10/5=2 余数是0
+        num = pageNum / 5 - 1;  //
+    } else {
+        num = Math.floor(pageNum / 5)
+    }
+
+    var start = num * 5 + 1; //开始页数  1
+    var end = start + 4 > totalPage ? totalPage : start + 4;  //结束页数
+
+            if(start > 1){
+    %>
+    <li><a href="/article/list/<%= start - 1 %>/<%= pageSize %>">上一页</a></li>
+    <%
+    }
+
+            for(var i = start;i <= end;i++){
+    %>
+    <li><a href="/article/list/<%= i %>/<%= pageSize %>"><%= i %></a></li>
+    <%
+    }
+
+            if(totalPage > end){
+    %>
+    <li><a href="/article/list/<%= end + 1 %>/<%= pageSize %>">下一页</a></li>
+    <%
+    }
+}
+    %>
+</ul>
+
+<%- include include/footer.ejs%>

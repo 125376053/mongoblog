@@ -1,0 +1,11 @@
+
+<%- include ../include/head.ejs%>
+<ul class="tags">
+    <%
+    tags.forEach(function(tag){
+    %>
+    <a href="/article/tags/<%=tag%>"><%=tag%></a>
+    <%
+    })
+    %>
+</ul>

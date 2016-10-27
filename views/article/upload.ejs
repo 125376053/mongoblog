@@ -1,0 +1,43 @@
+
+<%- include ../include/head.ejs%>
+
+    <!--显示图片-->
+    <div style="width:300px;height:150px;overflow:hidden;margin-bottom:10px;padding:10px;border:1px solid red;">
+        <img src="" id="showFile" style="width: 100%" >
+    </div>
+
+    <!--上传图片-->
+    <div>
+        <input type="file" name="uploadFile" id="uploadFile">
+        <button id="submitBtn">上传图片</button>
+    </div>
+
+    <!--显示markdown地址引用-->
+    <p class="showUrl"></p>
+
+
+
+<script src="/javascripts/jquery.js"></script>
+<script>
+    $(function(){
+
+        $('#submitBtn').click(function(){
+            //html5处理ajax-post请求时的对象
+            var formData=new FormData();
+            //你可以先创建一个空的FormData对象,然后使用append()方法向该对象里添加字段
+            formData.append('uploadFile',$('#uploadFile')[0].files[0]);//第一张图片  第一个参数是input name的名字
+
+            $.ajax({
+                url:'/article/upload',
+                type:'POST',
+                data:formData,
+                processData:false,
+                contentType:false,
+            }).done(function(ret){ //ret服务器返回的图片本身
+                $('#showFile').attr('src','/upload/'+ret); //显示图片
+                $('.showUrl').html('![]('+'/upload/'+ret+')'); //图片地址
+            })
+        })
+
+    })
+</script>

@@ -1,0 +1,25 @@
+
+<%- include ../include/head.ejs%>
+
+<!--form内部的变量都是post的时候才用到 get时候没有用到-->
+<form method="post" action="/article/<%=cmd%>">
+
+    <!--隐藏域id 添加文章的时候保存一个Id 修改文章的时候 用这个id对其进行修改 保持添加与修改是对同一个id-->
+<!--req.body._id 可以得到 name为_id的字段值是 article._id -->
+<!--添加文章的时候不会用到这些变量 修改的时候才会用到-->
+    <input type="hidden" name="_id" value="<%=article._id%>">
+
+    <p>标题<input type="text" name="title" id="title" value="<%= article.title%>"></p>
+
+    <p>内容<textarea name="content" id="content" rows="5" cols="50"><%- article.content%></textarea></p>
+
+    <!--标签功能  发布文章article.tags不存在 就执行article.tags这个字段数据库里有 如果存在就访问他的每一个 解决报错问题-->
+    <p>
+        标签1<input type="text" name="tag1" value="<%=article.tags?article.tags[0]:article.tags%>">
+        标签2<input type="text" name="tag2" value="<%=article.tags?article.tags[1]:article.tags%>">
+        标签3<input type="text" name="tag3" value="<%=article.tags?article.tags[2]:article.tags%>">
+    </p>
+
+    <p><input type="submit" value="保存"></p>
+
+</form>

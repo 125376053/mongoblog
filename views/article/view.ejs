@@ -1,0 +1,67 @@
+
+<%- include ../include/head.ejs%>
+
+<div class="xxPage">
+    <p>文章标题：<%=article.title%></p>
+
+    <div>文章内容：<%-article.content%></div>
+
+    <p>　　作者：<%=article.zcjId.username%></p>
+
+    <p>发布时间：<%=article.createTime.minute%></p>
+
+    <p>修改时间：<%=article.updateTime.minute%></p>
+
+    <ul class="tags">
+        <%
+        article.tags.forEach(function(tag){
+        %>
+            <a href="/article/tags/<%=tag%>"><%=tag%></a>
+        <%
+        })
+        %>
+    </ul>
+
+</div>
+
+
+<div class="views">
+    <a href="/article/edit/<%=article._id%>">编辑</a>
+    <a href="/article/delete/<%=article._id%>">删除</a>
+</div>
+
+
+<!--显示用户的评论-->
+<%
+    if(article.comments){
+        article.comments.forEach(function(comment){
+        %>
+            <div class="pl">
+                <span>
+                    <%=comment.zcjId.username%>:<%=comment.content%>
+                    评论时间:<%=comment.createTime%>
+                </span>
+
+                <a href="/article/deleteComment/<%=article._id%>/<%=comment._id%>">删除评论</a>
+            </div>
+        <%
+    })
+
+    }
+%>
+
+
+<!--用户输入增加评论    哪篇文章增加评论和谁增加的评论-->
+<form method="post" action="/article/addComment" class="form">
+
+    <input type="hidden" name="_id" value="<%=article._id%>">
+
+    <input type="hidden" name="zcjId" value="<%=zcj._id%>">
+
+    <p>评论：</p>
+
+    <textarea rows="5" cols="100" name="content"></textarea>
+
+    <button type="submit">发表评论</button>
+
+</form>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+
+<ul>
+    <li><a href="/article/list/1/2">首页</a></li>
+    <!--根据session里面的值zcj是否存在来判断用户是否登录 这个值是登录时从数据库里查询出来保存到session里面的-->
+    <%
+        if(zcj){
+            %>
+                <li><a href="/article/add">发布文章</a></li>
+                <li><a href="/article/upload">上传图片</a></li>
+                <li><a href="/article/tags">标签</a></li>
+                <li><a href="/article/links">友情链接</a></li>
+                <li><a href="/users/logout">退出登录</a></li>
+            <%
+        }else{
+            %>
+                <li><a href="/users/reg">注册</a></li>
+                <li><a href="/users/login">登录</a></li>
+            <%
+        }
+    %>
+
+</ul>
+
+<!--用户登录后显示欢迎语-->
+<div>
+    <%
+        if(zcj){
+            %>
+                <p>欢迎<%=zcj.username%>光临</p>
+            <%
+        }
+    %>
+</div>
+
+<!--提示信息 刷新后会消失 这是由flash决定的-->
+<div>
+<%
+    if(error){
+        %>
+            <p><%=error%><p>
+        <%
+    }else if(success){
+        %>
+            <p><%=success%><p>
+        <%
+    }
+%>
+</div>
